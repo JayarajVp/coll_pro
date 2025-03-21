@@ -3,25 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Host Event</title>
+    <title>Register Complaint</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #0A192F;
             color: white;
-            text-align: center;
-            padding: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-        a {
-            color: #00AEEF;
-            text-decoration: none;
-            font-size: 20px;
+        .container {
+            background: white;
+            color: #0A192F;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+            width: 350px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #0A192F;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        .btn {
+            background: #0A192F;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background: #112D4E;
         }
     </style>
 </head>
 <body>
-    <h2>Host an Event</h2>
-    <p>Event hosting page coming soon...</p>
-    <a href="{% url 'dashboard' %}">Go Back</a>
+    <div class="container">
+        <h2>Register a Complaint</h2>
+        <form action="{% url 'submit_complaint' %}" method="post">
+            {% csrf_token %}
+            <label for="roll_number">Roll Number:</label>
+            <input type="text" id="roll_number" name="roll_number" required>
+
+            <label for="complaint_description">Complaint Description:</label>
+            <textarea id="complaint_description" name="complaint_description" required></textarea>
+
+            <input type="submit" class="btn" value="Submit Complaint">
+        </form>
+    </div>
 </body>
 </html>

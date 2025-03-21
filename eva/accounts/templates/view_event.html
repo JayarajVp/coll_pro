@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Host Event</title>
+    <title>View Events</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,16 +12,44 @@
             text-align: center;
             padding: 50px;
         }
-        a {
-            color: #00AEEF;
-            text-decoration: none;
-            font-size: 20px;
+        .event {
+            cursor: pointer;
+            background: #112240;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            display: inline-block;
+            width: 80%;
+        }
+        .event-description {
+            display: none;
+            margin-top: 10px;
+            background: #1D3557;
+            padding: 10px;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <h2>Host an Event</h2>
-    <p>Event hosting page coming soon...</p>
-    <a href="{% url 'dashboard' %}">Go Back</a>
+    <h2>View Events</h2>
+    {% for event in events %}
+        <div class="event" onclick="toggleDescription('desc{{ event.id }}')">
+            <h3>{{ event.event_name }}</h3>
+            <div id="desc{{ event.id }}" class="event-description">
+                <p><strong>Host:</strong> {{ event.host_name }}</p>
+                <p><strong>Description:</strong> {{ event.event_description }}</p>
+
+            </div>
+        </div>
+    {% endfor %}
+    <br>
+    <a href="{% url 'dashboard' %}" style="color: #00AEEF; text-decoration: none;">Go Back</a>
+
+    <script>
+        function toggleDescription(id) {
+            var desc = document.getElementById(id);
+            desc.style.display = desc.style.display === "none" ? "block" : "none";
+        }
+    </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Host Event</title>
+    <title>View Complaints</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,16 +12,67 @@
             text-align: center;
             padding: 50px;
         }
-        a {
-            color: #00AEEF;
-            text-decoration: none;
-            font-size: 20px;
+        input {
+            padding: 8px;
+            width: 200px;
+        }
+        button {
+            padding: 8px;
+            background: #00AEEF;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        .complaint {
+            background: #112240;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <h2>Host an Event</h2>
-    <p>Event hosting page coming soon...</p>
-    <a href="{% url 'dashboard' %}">Go Back</a>
+    <h2>Search Complaints</h2>
+    <input type="text" id="rollNo" placeholder="Enter Roll Number">
+    <button onclick="searchComplaint()">Search</button>
+
+    <div id="complaintResults"></div>
+
+    <br>
+    <a href="{% url 'dashboard' %}" style="color: #00AEEF; text-decoration: none;">Go Back</a>
+
+    <script>
+        function searchComplaint() {
+    var rollNo = document.getElementById("rollNo").value.trim(); // Trim spaces
+
+    if (rollNo === "") { 
+        alert("Please enter a roll number!"); // Show alert if roll number is empty
+        return; // Stop the function
+    }
+
+    fetch(`/view-complaint/?roll_no=${rollNo}`) // Ensure roll_no is always sent
+        .then(response => response.json())
+        .then(data => {
+            var results = document.getElementById("complaintResults");
+            results.innerHTML = "";
+
+            if (data.complaints.length > 0) {
+                data.complaints.forEach(c => {
+                    results.innerHTML += `<div class="complaint">
+                        <strong>Roll Number:</strong> ${c.roll_number} <br>
+                        <strong>Complaint:</strong> ${c.complaint_description} <br>
+                        <strong>Date Submitted:</strong> ${c.date_submitted}
+                    </div>`;
+                });
+            } else {
+                results.innerHTML = "<p>No Complaints Found</p>";
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching complaints:", error);
+            alert("Failed to fetch complaints!");
+        });
+}
+    </script>
 </body>
 </html>
